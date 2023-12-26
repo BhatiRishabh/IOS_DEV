@@ -2,13 +2,10 @@
 //  CoinManager.swift
 //  ByteCoin
 //
-//  Created by Angela Yu on 11/09/2019.
-//  Copyright © 2019 The App Brewery. All rights reserved.
-//
 
 import Foundation
 protocol coinManagerDelegate{
-    func didUpdateData(_ coinManager: CoinManager)
+    func didUpdateData(rate:Double, currency:String)
     func didFailWithError(error: Error)
 }
 struct CoinManager {
@@ -20,12 +17,6 @@ struct CoinManager {
     func getCoinPrice(for currency:String){
         let urlString="\(baseURL)\(currency)?apikey=\(apiKey)"
 //        print(urlString)
-        performRequest(with: urlString)
-    }
-    
-    let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
-    
-    func performRequest(with urlString:String){
         if let url=URL(string: urlString){
             let session=URLSession(configuration: .default)
             let task = session.dataTask(with: url) { (data, reponse, error) in
@@ -37,7 +28,7 @@ struct CoinManager {
                     _=String(data: safeData, encoding: String.Encoding.utf8) as String?
                     //print(stringdata!)
                     if let rate=parseJSON(safeData){
-                        print(rate)
+                        self.delegate?.didUpdateData(rate: rate, currency: currency)
                     }
                                         
                 }
@@ -45,6 +36,8 @@ struct CoinManager {
             task.resume()
         }
     }
+    
+    let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
     
     func parseJSON(_ coindata: Data)->Double?{
      let decoder=JSONDecoder()
