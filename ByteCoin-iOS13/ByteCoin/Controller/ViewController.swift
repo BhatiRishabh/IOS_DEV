@@ -1,14 +1,10 @@
 //
 //  ViewController.swift
 //  ByteCoin
-//
-//  Created by Angela Yu on 11/09/2019.
-//  Copyright © 2019 The App Brewery. All rights reserved.
-//
 
 import UIKit
 
-class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class ViewController: UIViewController {
    
     
 
@@ -29,11 +25,29 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
     }
     
-    func numberOfComponents(in pickerview: UIPickerView)->Int{
-        return 1
+}
+
+//MARK: - CoinManagerDelegate
+
+
+extension ViewController:coinManagerDelegate{
+    func didUpdateData(rate:Double, currency:String) {
+        print(rate)
+        DispatchQueue.main.sync {
+            BitcoinLabel.text=String(format: "%.2f", rate)
+            CurrencyLabel.text=currency
+        }
     }
     
-    
+    func didFailWithError(error: Error) {
+        print(error)
+        
+    }
+}
+
+
+//MARK: - UIPickerViewDelegate
+extension ViewController:UIPickerViewDelegate{
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int)->Int{
         return coinManager.currencyArray.count
     }
@@ -50,17 +64,13 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     
 }
 
-//MARK: - CoinManagerDelegate
+//MARK: - UIPickerViewDataSource
 
-
-extension ViewController:coinManagerDelegate{
-    func didUpdateData(_ coinManager: CoinManager) {
-        
-        
+extension ViewController:UIPickerViewDataSource{
+    func numberOfComponents(in pickerview: UIPickerView)->Int{
+        return 1
     }
     
-    func didFailWithError(error: Error) {
-        
-    }
 }
+
 
