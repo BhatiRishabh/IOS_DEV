@@ -1,45 +1,64 @@
+# 🌤️ CLIMA
 
+This is a simple and beautiful iOS application developed using Swift and SwiftUI. The app allows users to search for any location and get the current temperature using the **AccuWeather API**. It also supports **Light and Dark Mode** for a better user experience.
 
-#  Clima
+---
 
+## ✨ Features
 
-## What you will create
+- 🌍 Search any city or location
+- 🌡️ Get real-time temperature using AccuWeather API
+- 🌙 Light Mode and Dark Mode support
+- 🧭 Clean and responsive UI
 
-By the end of the module, you will have made a beautiful, dark-mode enabled weather app. You'll be able to check the weather for the current location based on the GPS data from the iPhone as well as by searching for a city manually. 
+---
 
-## What you will learn
+## 📸 Screenshot
 
-* How to create a dark-mode enabled app.
-* How to use vector images as image assets.
-* Learn to use the UITextField to get user input. 
-* Learn about the delegate pattern.
-* Swift protocols and extensions. 
-* Swift guard keyword. 
-* Swift computed properties.
-* Swift closures and completion handlers.
-* Learn to use URLSession to network and make HTTP requests.
-* Parse JSON with the native Encodable and Decodable protocols. 
-* Learn to use Grand Central Dispatch to fetch the main thread.
-* Learn to use Core Location to get the current location from the phone GPS. 
+![App Screenshot](Screenshots/climate_app.png)
 
-### Condition Codes
-```
-switch conditionID {
-        case 200...232:
-            return "cloud.bolt"
-        case 300...321:
-            return "cloud.drizzle"
-        case 500...531:
-            return "cloud.rain"
-        case 600...622:
-            return "cloud.snow"
-        case 701...781:
-            return "cloud.fog"
-        case 800:
-            return "sun.max"
-        case 801...804:
-            return "cloud.bolt"
-        default:
-            return "cloud"
-        }
-```
+> Replace `Screenshots/climate_app.png` with the actual path to your image in the project directory.
+
+---
+
+## 🧑‍💻 Code Structure
+
+### 🔹 Main Components
+
+- **ContentView.swift**  
+  The main entry point where UI is defined. It contains the search bar and temperature display. It listens to state changes in the `WeatherViewModel`.
+
+- **WeatherViewModel.swift**  
+  A view model responsible for API calls to AccuWeather and storing the data. It updates the view on receiving the temperature.
+
+- **WeatherService.swift**  
+  This file contains the logic for fetching data from the AccuWeather API. It handles URL construction, API keys, and network responses.
+
+- **ThemeManager.swift** *(Optional)*  
+  Handles Light/Dark mode switching. Utilizes `@Environment(\.colorScheme)` and toggles accordingly.
+
+---
+
+## 🧰 Tech Stack
+
+- Swift
+- SwiftUI
+- Combine (for reactive data updates)
+- AccuWeather API
+- Xcode
+
+---
+
+## 🔑 API Integration
+
+To use this app, you need to obtain a free API key from [AccuWeather Developer Portal](https://developer.accuweather.com/).
+
+1. Create an account.
+2. Generate your API key.
+3. Add the key to your project (preferably using `.xcconfig` or environment variables).
+
+Example usage in code:
+
+```swift
+let apiKey = "YOUR_API_KEY"
+let url = "https://dataservice.accuweather.com/currentconditions/v1/\(locationKey)?apikey=\(apiKey)"
